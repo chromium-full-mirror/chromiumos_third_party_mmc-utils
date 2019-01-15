@@ -274,6 +274,7 @@ int do_writeprotect_boot_get(int nargs, char **argv)
 
 	print_writeprotect_boot_status(ext_csd);
 
+	close(fd);
 	return ret;
 }
 
@@ -356,6 +357,7 @@ int do_writeprotect_boot_set(int nargs, char **argv)
 		exit(1);
 	}
 
+	close(fd);
 	return ret;
 }
 
@@ -444,6 +446,7 @@ int do_writeprotect_user_get(int nargs, char **argv)
 	if (last_wpblk != (x + y - 1))
 		print_wp_status(wp_sizeblks, last_wpblk, cnt - 1, last_prot);
 
+	close(fd);
 	return ret;
 }
 
@@ -590,6 +593,7 @@ int do_disable_512B_emulation(int nargs, char **argv)
 		printf("MMC does not support disabling 512B emulation mode.\n");
 	}
 
+	close(fd);
 	return ret;
 }
 
@@ -661,6 +665,7 @@ int do_write_boot_en(int nargs, char **argv)
 			value, EXT_CSD_PART_CONFIG, device);
 		exit(1);
 	}
+	close(fd);
 	return ret;
 }
 
@@ -782,6 +787,7 @@ int do_hwreset(int value, int nargs, char **argv)
 		exit(1);
 	}
 
+	close(fd);
 	return ret;
 }
 
@@ -841,6 +847,7 @@ int do_write_bkops_en(int nargs, char **argv)
 		exit(1);
 	}
 
+	close(fd);
 	return ret;
 }
 
@@ -871,6 +878,7 @@ int do_status_get(int nargs, char **argv)
 
 	printf("SEND_STATUS response: 0x%08x\n", response);
 
+	close(fd);
 	return ret;
 }
 
@@ -1751,11 +1759,11 @@ int do_read_extcsd(int nargs, char **argv)
 		printf("Write reliability setting register"
 			" [WR_REL_SET]: 0x%02x\n", reg);
 
-		printf(" user area: %s\n", reg & (1<<0) ? reliable : fast);
+		printf(" user area: %s\n", (reg & (1<<0)) ? reliable : fast);
 		int i;
 		for (i = 1; i <= 4; i++) {
 			printf(" partition %d: %s\n", i,
-				reg & (1<<i) ? reliable : fast);
+				(reg & (1<<i)) ? reliable : fast);
 		}
 
 		reg = ext_csd[EXT_CSD_WR_REL_PARAM];
@@ -2071,6 +2079,7 @@ int do_sanitize(int nargs, char **argv)
 		exit(1);
 	}
 
+	close(fd);
 	return ret;
 
 }
@@ -2968,6 +2977,7 @@ int do_cache_ctrl(int value, int nargs, char **argv)
 		exit(1);
 	}
 
+	close(fd);
 	return ret;
 }
 
