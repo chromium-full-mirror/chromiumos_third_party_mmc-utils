@@ -133,9 +133,10 @@
 #define EN_REL_WR	(1<<2)
 
 /*
- * BKOPS_EN field definition
+ * BKOPS_EN field definitions
  */
-#define BKOPS_ENABLE	(1<<0)
+#define BKOPS_MAN_ENABLE	(1<<0)
+#define BKOPS_AUTO_ENABLE	(1<<1)
 
 #define MMC_FFU_INVOKE_OP	302
 
