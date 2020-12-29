@@ -31,6 +31,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <linux/fs.h> /* for BLKGETSIZE */
+#include <ctype.h>
 
 #include "mmc.h"
 #include "mmc_cmds.h"
@@ -1934,8 +1935,16 @@ int do_read_extcsd(int nargs, char **argv)
 	}
 
 	if (ext_csd_rev >= 7) {
-		printf("eMMC Firmware Version: %s\n",
-			(char*)&ext_csd[EXT_CSD_FIRMWARE_VERSION]);
+		printf("eMMC Firmware Version: ");
+		for (int i = EXT_CSD_FIRMWARE_VERSION; i < EXT_CSD_PRE_EOL_INFO; i++) {
+			char c = ext_csd[i];
+
+			if (isprint(c))
+				printf("%c", c);
+			else if (c != 0)
+				printf("\\x%02x", c);
+		}
+		printf("\n");
 		printf("eMMC Life Time Estimation A [EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A]: 0x%02x\n",
 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A]);
 		printf("eMMC Life Time Estimation B [EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B]: 0x%02x\n",
