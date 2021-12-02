@@ -1691,6 +1691,7 @@ int do_read_extcsd(int nargs, char **argv)
 	if (reg & 0x02) printf(" HS533 Dual Data Rate eMMC @266MHz 1.2VI/O\n");
 	if (reg & 0x01) printf(" HS533 Dual Data Rate eMMC @266MHz 1.8VI/O\n");
 	reg = ext_csd[196];
+	printf("Card Type [CARD_TYPE: 0x%02x]\n", reg);
 	if (reg & 0x80) printf(" HS400 Dual Data Rate eMMC @200MHz 1.2VI/O\n");
 	if (reg & 0x40) printf(" HS400 Dual Data Rate eMMC @200MHz 1.8VI/O\n");
 	if (reg & 0x20) printf(" HS200 Single Data Rate eMMC @200MHz 1.2VI/O\n");
