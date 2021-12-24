@@ -1915,7 +1915,9 @@ int do_read_extcsd(int nargs, char **argv)
 		printf("Control to turn the Cache ON/OFF"
 			" [CACHE_CTRL]: 0x%02x\n", ext_csd[33]);
 		/* flush_cache ext_csd[32] not readable */
-		/*Reserved [31:0] */
+		printf("Control to turn the Cache Barrier ON/OFF"
+			" [BARRIER_CTRL]: 0x%02x\n", ext_csd[31]);
+		/*Reserved [30:0] */
 	}
 	if (ext_csd_rev >= 7) {
 		printf("Mode config [MODE_CONFIG: 0x%02x]\n", ext_csd[30]);
