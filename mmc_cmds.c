@@ -3311,11 +3311,9 @@ int do_ffu(int nargs, char **argv)
 	off_t fw_size, bytes_left, off;
 	char *device;
 	struct mmc_ioc_multi_cmd *multi_cmd = NULL;
+	unsigned int default_chunk = MMC_IOC_MAX_BYTES;
 
-	if (nargs != 3) {
-		fprintf(stderr, "Usage: ffu <image name> </path/to/mmcblkX> \n");
-		exit(1);
-	}
+	assert (nargs == 3 || nargs == 4);
 
 	device = argv[2];
 	dev_fd = open(device, O_RDWR);
@@ -3375,6 +3373,14 @@ int do_ffu(int nargs, char **argv)
 		goto out;
 	}
 
+	if (nargs == 4) {
+		default_chunk = strtol(argv[3], NULL, 10);
+		if (default_chunk > MMC_IOC_MAX_BYTES || default_chunk % 512) {
+			fprintf(stderr, "Invalid chunk size");
+			goto out;
+		}
+	}
+
 	/* prepare multi_cmd for FFU based on cmd to be used */
 
 	multi_cmd->num_of_cmds = 4;
@@ -3399,8 +3405,8 @@ do_retry:
 	bytes_left = fw_size;
 	off = 0;
 	while (bytes_left) {
-		unsigned int chunk_size = bytes_left < MMC_IOC_MAX_BYTES ?
-					  bytes_left : MMC_IOC_MAX_BYTES;
+		unsigned int chunk_size = bytes_left < default_chunk ?
+					  bytes_left : default_chunk;
 
 		/* prepare multi_cmd for FFU based on cmd to be used */
 		set_ffu_single_cmd(multi_cmd, ext_csd, chunk_size, buf, off);
