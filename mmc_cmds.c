@@ -2542,7 +2542,7 @@ int do_emmc50_ffu (int nargs, char **argv)
 			}										\
 			else if (r > 0)							\
 				ret += r;							\
-		} while (r != 0 && (size_t)ret != nbyte);	\
+		} while (r != 0 && (size_t)ret < nbyte);	\
 													\
 		ret;										\
 	})
